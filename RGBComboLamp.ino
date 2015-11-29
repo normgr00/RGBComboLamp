@@ -63,7 +63,7 @@ void setup() {
 
 void loop()
 {      
-potVal = map(analogRead(speedPotPin), 0, 1023, 2, 600);
+potVal = map(analogRead(speedPotPin), 0, 1023, 2, 200);
 UPDATES_PER_SECOND = (potVal);
 
 brightnessReading = map(analogRead(brightnessPotPin), 0, 1023, 1, 255);  //works
@@ -98,59 +98,64 @@ switch (paternSelection)  {
     palletteStuff();  //test
     break;
     case 1: 
+    SetupVeriablePalette2(); //SetupVeriableAndGreenPalette();
+    currentBlending = BLEND;
+    palletteStuff();  //test
+    break;
+    case 2: 
     currentPalette = RainbowColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
-    case 2:
+    case 3:
     SetupVeriablePalette();
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
-    case 3:
+    case 4:
     currentPalette = RainbowStripeColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
-    case 4:
+    case 5:
     SetupPurpleAndGreenPalette();
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
-    case 5:
+    case 6:
     currentPalette = CloudColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
-    case 6:
+    case 7:
     currentPalette = PartyColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
-    case 7:
-    currentPalette = ForestColors_p;
-    currentBlending = BLEND;
-    palletteStuff();  //test
-    break;
     case 8:
-    currentPalette = OceanColors_p;
+    currentPalette = ForestColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
     case 9:
-    currentPalette = ForestColors_p;
+    currentPalette = OceanColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
     case 10:
-    currentPalette = LavaColors_p;
+    currentPalette = ForestColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
     case 11:
+    currentPalette = LavaColors_p;
+    currentBlending = BLEND;
+    palletteStuff();  //test
+    break;
+    case 12:
     rainbow2();
     break;    
-    case 12:
+    case 13:
     fire();
     break;  
     default:
@@ -239,47 +244,22 @@ void SetupVeriablePalette()
     veriable3, veriable3, black,  black );
 }
 
-/*
-void SetupBlackAndWhiteStripedPalette()
+void SetupVeriablePalette2()
 {
-  // 'black out' all 16 palette entries... ///
-  fill_solid( currentPalette, 16, CRGB::Black);
-  //fill_solid (CRGB veriable = CHSV( map(analogRead(veriableColorPotPin), 0, 1023, 0, 255), 255, 255));
-  // and set every fourth one to white.
-  currentPalette[0] = CRGB::White;
-  currentPalette[4] = CRGB::White;
-  currentPalette[8] = CRGB::White;
-  currentPalette[12] = CRGB::White;
-
+  CRGB veriable0 = CHSV( map(analogRead(veriableColorPotPin0), 0, 1023, 0, 240), 255, 255);  //240 turns to red again
+  CRGB veriable1 = CHSV( map(analogRead(veriableColorPotPin1), 0, 1023, 0, 240), 255, 255);
+  CRGB veriable2 = CHSV( map(analogRead(veriableColorPotPin2), 0, 1023, 0, 240), 255, 255);
+  CRGB veriable3 = CHSV( map(analogRead(veriableColorPotPin3), 0, 1023, 0, 240), 255, 255);
+  //CRGB green  = CHSV( HUE_GREEN, 255, 255);
+  CRGB black  = CRGB::Black;
+  
+    currentPalette = CRGBPalette16( 
+    veriable0,  black,  veriable1,  black,
+    veriable2, black, veriable3,  black,
+    veriable0,  black,  veriable1,  black,
+    veriable2, black, veriable3,  black );
 }
-*/
-// This example shows how to set up a static color palette
-// which is stored in PROGMEM (flash), which is almost always more 
-// plentiful than RAM.  A static PROGMEM palette like this
-// takes up 64 bytes of flash.
-/*
-const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
-{
-  CRGB::Red,
-  CRGB::Gray, // 'white' is too bright compared to red and blue
-  CRGB::Blue,
-  CRGB::Black,
 
-  CRGB::Red,
-  CRGB::Gray,
-  CRGB::Blue,
-  CRGB::Black,
-
-  CRGB::Red,
-  CRGB::Red,
-  CRGB::Gray,
-  CRGB::Gray,
-  CRGB::Blue,
-  CRGB::Blue,
-  CRGB::Black,
-  CRGB::Black 
-};
-*/
 
 void lightning() 
 {
