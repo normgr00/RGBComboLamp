@@ -29,11 +29,7 @@ const int brightnessPotPin = 1;
 int brightnessReading = 0;
 int BRIGHTNESS = (brightnessReading);
 
-const int colorWidthPotPin = 2;
-int colorWidthReading = 0;
-int colorWidth = (colorWidthReading);
-
-
+const int veriableColorPotPin0 = 2;
 const int veriableColorPotPin1 = 3;
 const int veriableColorPotPin2 = 4;
 const int veriableColorPotPin3 = 5;
@@ -55,24 +51,23 @@ TBlendType    currentBlending;
 
 void setup() {
   delay( 2000 ); // power-up safety delay
-  Serial.begin(9600);
+  //Serial.begin(9600);
   pinMode(paternSelectionSwitchPin, INPUT);
   digitalWrite (paternSelectionSwitchPin, HIGH);
   
   FastLED.addLeds<LED_TYPE, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );  
-  currentPalette = RainbowColors_p;
+  SetupVeriablePalette(); //currentPalette = RainbowColors_p;
 }
 
 
 
 void loop()
 {      
-//potVal = analogRead(potPin);
-potVal = map(analogRead(speedPotPin), 0, 1023, 1, 700);
+potVal = map(analogRead(speedPotPin), 0, 1023, 2, 600);
 UPDATES_PER_SECOND = (potVal);
-//brightnessReading = map(analogRead(brightnessPotPin), 0, 1023, 1, 255);
-//BRIGHTNESS = (brightnessReading);
-//currentBlending = BLEND; // BLEND or NOBLEND
+
+brightnessReading = map(analogRead(brightnessPotPin), 0, 1023, 1, 255);  //works
+BRIGHTNESS = (brightnessReading);
 
   if (pushbutton.update()) {
     if (pushbutton.fallingEdge()) {
@@ -86,7 +81,7 @@ UPDATES_PER_SECOND = (potVal);
       if (nowMillis - countAt > 100) {
         countPrinted = counter;
       }
-      if (counter > 9){
+      if (counter > 12){
          counter = 0;
 
     }
@@ -98,92 +93,92 @@ paternSelection = counter;
 
 switch (paternSelection)  {
     case 0: 
-   currentPalette = RainbowColors_p;
-   currentBlending = BLEND;
-   //brightnessReading = map(analogRead(brightnessPotPin), 0, 1023, 1, 255);
-   //BRIGHTNESS = (brightnessReading);
-   palletteStuff();  //test
+    SetupVeriablePalette(); //SetupVeriableAndGreenPalette();
+    currentBlending = BLEND;
+    palletteStuff();  //test
     break;
-    case 1:
-    currentPalette = RainbowStripeColors_p;
+    case 1: 
+    currentPalette = RainbowColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
     case 2:
-    SetupVeriableAndGreenPalette();
+    SetupVeriablePalette();
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
     case 3:
-    SetupPurpleAndGreenPalette();
+    currentPalette = RainbowStripeColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
     case 4:
-    currentPalette = CloudColors_p;
+    SetupPurpleAndGreenPalette();
     currentBlending = BLEND;
-        palletteStuff();  //test
+    palletteStuff();  //test
     break;
     case 5:
-    currentPalette = PartyColors_p;
+    currentPalette = CloudColors_p;
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
     case 6:
+    currentPalette = PartyColors_p;
+    currentBlending = BLEND;
+    palletteStuff();  //test
+    break;
+    case 7:
+    currentPalette = ForestColors_p;
+    currentBlending = BLEND;
+    palletteStuff();  //test
+    break;
+    case 8:
+    currentPalette = OceanColors_p;
+    currentBlending = BLEND;
+    palletteStuff();  //test
+    break;
+    case 9:
+    currentPalette = ForestColors_p;
+    currentBlending = BLEND;
+    palletteStuff();  //test
+    break;
+    case 10:
+    currentPalette = LavaColors_p;
+    currentBlending = BLEND;
+    palletteStuff();  //test
+    break;
+    case 11:
     rainbow2();
     break;    
-    case 7:
+    case 12:
     fire();
     break;  
-    case 8:
-    fire();
-    break;
     default:
-    currentPalette = RainbowColors_p;
+    SetupVeriablePalette();
     currentBlending = BLEND;
     palletteStuff();  //test
     break;
 } 
 
 {
-  /*
-  static uint8_t startIndex = 0;
-  startIndex = startIndex + 1; // motion speed 
-
-  FillLEDsFromPaletteColors( startIndex);
-
-  FastLED.show();
-  FastLED.delay(1000 / UPDATES_PER_SECOND);
-*/
 }
 }
+
 void palletteStuff()
-{
+{ 
   static uint8_t startIndex = 0;
   startIndex = startIndex + 1; /* motion speed */
-
   FillLEDsFromPaletteColors( startIndex);
-
   FastLED.show();
   FastLED.delay(1000 / UPDATES_PER_SECOND);
 }
 
 
 void FillLEDsFromPaletteColors( uint8_t colorIndex)
-{
-  //uint8_t brightness = 255;
-  
-  brightnessReading = map(analogRead(brightnessPotPin), 0, 1023, 1, 255);
-  BRIGHTNESS = (brightnessReading);
-  
-  colorWidthReading = map(analogRead(colorWidthPotPin), 0, 1023, 1, 10);
-  colorWidth = (colorWidthReading);
-  
+{ 
   for( int i = 0; i < NUM_LEDS; i++) {
-    //colorWidth = map(analogRead(colorWidthPotPin), 0, 1023, 1, 10);
-    //colorWidth = (colorWidthReading);
     leds[i] = ColorFromPalette( currentPalette, colorIndex, BRIGHTNESS, currentBlending);
-    colorIndex += (colorWidth);
+    colorIndex += 3; // Defines the width of the collor bands - Dynamic changes in this are problomatic - flickering 
   }
 }
 
@@ -228,26 +223,26 @@ void SetupPurpleAndGreenPalette()
 }
 
 
-void SetupVeriableAndGreenPalette()
+void SetupVeriablePalette()
 {
-  //veriableColor = map(analogRead(veriableColorPotPin), 0, 1023, 0, 255);
+  CRGB veriable0 = CHSV( map(analogRead(veriableColorPotPin0), 0, 1023, 0, 255), 255, 255);  //240 turns to red again
   CRGB veriable1 = CHSV( map(analogRead(veriableColorPotPin1), 0, 1023, 0, 255), 255, 255);
   CRGB veriable2 = CHSV( map(analogRead(veriableColorPotPin2), 0, 1023, 0, 255), 255, 255);
   CRGB veriable3 = CHSV( map(analogRead(veriableColorPotPin3), 0, 1023, 0, 255), 255, 255);
-  CRGB green  = CHSV( HUE_GREEN, 255, 255);
+  //CRGB green  = CHSV( HUE_GREEN, 255, 255);
   CRGB black  = CRGB::Black;
   
-  currentPalette = CRGBPalette16( 
-    green,  green,  black,  black,
+    currentPalette = CRGBPalette16( 
+    veriable0,  veriable0,  black,  black,
     veriable1, veriable1, black,  black,
-    green,  green,  black,  black,
-    veriable1, veriable1, black,  black );
+    veriable2,  veriable2,  black,  black,
+    veriable3, veriable3, black,  black );
 }
 
 /*
 void SetupBlackAndWhiteStripedPalette()
 {
-  // 'black out' all 16 palette entries...
+  // 'black out' all 16 palette entries... ///
   fill_solid( currentPalette, 16, CRGB::Black);
   //fill_solid (CRGB veriable = CHSV( map(analogRead(veriableColorPotPin), 0, 1023, 0, 255), 255, 255));
   // and set every fourth one to white.
