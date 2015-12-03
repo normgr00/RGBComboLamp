@@ -63,7 +63,7 @@ void setup() {
 
 void loop()
 {
-  potVal = map(analogRead(speedPotPin), 0, 1023, 1, 250);
+  potVal = map(analogRead(speedPotPin), 0, 1023, 250, 1);
   UPDATES_PER_SECOND = (potVal);
 
   brightnessReading = map(analogRead(brightnessPotPin), 0, 1023, 1, 255);  //works
